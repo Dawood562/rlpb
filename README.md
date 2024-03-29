@@ -1,4 +1,5 @@
 # I need to figure out a decent name for this
+[![Made by Snow](https://img.shields.io/badge/Made%20by-Snow%E2%9B%84-gold)]()
 A BakkesMod plugin that allows streamers to easily share their currently-used preset with their Twitch chat, preventing the need for constantly updating custom commands or repeating themselves.
 
 ## Usage
