@@ -2,14 +2,27 @@
 #include "rlpb.h"
 
 
-BAKKESMOD_PLUGIN(rlpb, "write a plugin description here", plugin_version, PLUGINTYPE_FREEPLAY)
+BAKKESMOD_PLUGIN(rlpb, "Twitch Preset Integration", plugin_version, PLUGINTYPE_FREEPLAY)
 
 std::shared_ptr<CVarManagerWrapper> _globalCvarManager;
 
-void rlpb::onLoad()
-{
+bool coolEnabled = false;
+
+void rlpb::onLoad() {
 	_globalCvarManager = cvarManager;
-	//LOG("Plugin loaded!");
+	LOG("Plugin loaded!");
+
+	
+	cvarManager->registerNotifier("BetterBallOnTop", [this](std::vector<std::string> args) {
+		ballOnTop(); }, "", PERMISSION_ALL);
+
+	cvarManager->registerCvar("rlpb_token", "", "Token for loadout data", false);
+	cvarManager->registerCvar("rlpb_enabled", "0", "Enable Plugin", true, true, 0, true, 1)
+		.addOnValueChanged([this](std::string oldValue, CVarWrapper cvar) {
+			coolEnabled = cvar.getBoolValue();
+		});
+	cvarManager->registerCvar("rlpb_distance", "200.0", "Distance to place the ball above");
+
 	// !! Enable debug logging by setting DEBUG_LOG = true in logging.h !!
 	//DEBUGLOG("rlpb debug mode enabled");
 
@@ -46,4 +59,39 @@ void rlpb::onLoad()
 	//});
 	// You could also use std::bind here
 	//gameWrapper->HookEvent("Function TAGame.Ball_TA.Explode", std::bind(&rlpb::YourPluginMethod, this);
+}
+
+void rlpb::onUnload() {
+	LOG("I was too cool for this world B'(");
+}
+
+void rlpb::ballOnTop() {
+	if (!gameWrapper->IsInFreeplay()) { return; }
+
+	ServerWrapper server = gameWrapper->GetCurrentGameState();
+	if (!server) { return; }
+
+	if (!coolEnabled) { return; }
+
+	BallWrapper ball = server.GetBall();
+	if (!ball) { return; }
+	
+	CarWrapper car = gameWrapper->GetLocalCar();
+	if (!car) { return; }
+
+	CVarWrapper distanceCVar = cvarManager->getCvar("rlpb_distance");
+	if (!distanceCVar) { return; }
+	float distance = distanceCVar.getFloatValue();
+
+	Vector carVelocity = car.GetVelocity();
+	ball.SetVelocity(carVelocity);
+
+	Vector carLocation = car.GetLocation();
+	float ballRadius = ball.GetRadius();
+	ball.SetLocation(carLocation + Vector{0, 0, distance });
+
+}
+
+void rlpb::spitPreset() {
+
 }
