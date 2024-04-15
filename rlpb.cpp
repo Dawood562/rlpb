@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "rlpb.h"
+#include "ItemStructs.h"
 
 
 BAKKESMOD_PLUGIN(rlpb, "Twitch Preset Integration", plugin_version, PLUGINTYPE_FREEPLAY)
