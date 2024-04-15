@@ -46,7 +46,4 @@ private:
 
 	SpecialEditionDatabaseWrapper specialEditionDb = { 0 };
 	PaintDatabaseWrapper paintDatabase = { 0 };
-
-	std::map<int, std::string> slotNumbers;
-	void InitSlotNumbers();
 };

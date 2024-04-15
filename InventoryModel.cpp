@@ -9,31 +9,41 @@ InventoryModel::InventoryModel(std::shared_ptr<GameWrapper> gw) : m_gw(std::move
 	paintDatabase = items.GetPaintDB();
 	LOG("Items::Init-products");
 	InitProducts();
-	InitSlotNumbers();
 }
 
-void InventoryModel::InitSlotNumbers() {
-	slotNumbers.insert(std::pair<int, std::string>(0, "Body"));
-	slotNumbers.insert(std::pair<int, std::string>(1, "Decal"));
-	slotNumbers.insert(std::pair<int, std::string>(2, "Wheels"));
-	slotNumbers.insert(std::pair<int, std::string>(3, "Boost"));
-	slotNumbers.insert(std::pair<int, std::string>(4, "Antenna"));
-	slotNumbers.insert(std::pair<int, std::string>(5, "Topper"));
-	slotNumbers.insert(std::pair<int, std::string>(6, "Paint"));
-	slotNumbers.insert(std::pair<int, std::string>(7, "PaintFinish"));
-	slotNumbers.insert(std::pair<int, std::string>(12, "PaintAlt"));
-	slotNumbers.insert(std::pair<int, std::string>(14, "Trail"));
-	slotNumbers.insert(std::pair<int, std::string>(15, "GoalExplosion"));
-	slotNumbers.insert(std::pair<int, std::string>(16, "Banner"));
-	slotNumbers.insert(std::pair<int, std::string>(20, "AvatarBorder"));
-	slotNumbers.insert(std::pair<int, std::string>(21, "PlayerTitle"));
-}
 
 std::string InventoryModel::GetSlotName(int slotNo) {
-	if (slotNumbers.find(slotNo) == slotNumbers.end()) {
-		return "";
+	switch (slotNo) {
+	case 0:
+		return "Body";
+	case 1:
+		return "Decal";
+	case 2:
+		return "Wheels";
+	case 3:
+		return "Boost";
+	case 4:
+		return "Antenna";
+	case 5:
+		return "Topper";
+	case 6:
+		return "Paint";
+	case 7:
+		return "PaintFinish";
+	case 12:
+		return "PaintAlt";
+	case 14:
+		return "Trail";
+	case 15:
+		return "GoalExplosion";
+	case 16:
+		return "Banner";
+	case 20:
+		return "AvatarBorder";
+	case 21:
+		return "PlayerTitle";
 	}
-	return slotNumbers[slotNo];
+	return "";
 }
 
 OnlineProdData InventoryModel::GetProdData(OnlineProductWrapper& onlineProd)

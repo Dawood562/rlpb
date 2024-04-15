@@ -21,6 +21,7 @@ void rlpb::onLoad() {
 		ballOnTop(); }, "", PERMISSION_ALL);
 
 	cvarManager->registerNotifier("spitPreset", [&, this](std::vector<std::string> args) {
+		if (!inventoryModel) { return; }
 		spitPreset(inventoryModel); }, "", PERMISSION_ALL);
 
 	cvarManager->registerCvar("rlpb_token", "", "Token for loadout data", false);
@@ -118,8 +119,13 @@ void rlpb::ballOnTop() {
 }
 
 void rlpb::spitPreset(std::shared_ptr<InventoryModel> im) {
+	if (!gameWrapper->IsInFreeplay()) { return; } // Not in required mode
+
+	ServerWrapper server = gameWrapper->GetCurrentGameState();
+	if (!server) { return; } // Not in the pitch
+
 	CarWrapper car = gameWrapper->GetLocalCar();
-	if (!car) { LOG("CarWrapper nono");  return; }
+	if (!car) { return; } // No car returned (user is demod?)
 
 	LOG("GetLoadoutBody:");
 	LOG(std::to_string(car.GetLoadoutBody()));
@@ -128,6 +134,7 @@ void rlpb::spitPreset(std::shared_ptr<InventoryModel> im) {
 	if (!items) { LOG("ItemsWrapper nono");  return; }
 
 	LoadoutWrapper loadout = items.GetCurrentLoadout(car.GetPreviewTeamIndex()); // 0 = Blue, 1 = Orange
+	if (!loadout) { LOG("LoadoutWrapper nah"); return; }
 
 	LOG("loadout.GetLoadout().IsNull()");
 	LOG(std::to_string(loadout.GetLoadout().IsNull()));
@@ -138,21 +145,14 @@ void rlpb::spitPreset(std::shared_ptr<InventoryModel> im) {
 	LOG("loadout.GetAccentPaintColorId()");
 	LOG(std::to_string(loadout.GetAccentPaintColorId()));
 
-	LOG("loadout.GetPrimaryFinishId()");
-	LOG(std::to_string(loadout.GetPrimaryFinishId()));
-
-	LOG("loadout.GetAccentFinishId()");
-	LOG(std::to_string(loadout.GetAccentFinishId()));
-
+	std::shared_ptr m_im = std::move(im);
 	auto load = loadout.GetOnlineLoadoutV2();
 
 	for (auto item : load)
 	{
-		auto data = im->GetProdData(item);
-		gameWrapper->Execute([&, this](GameWrapper* gw) {
-			LOG("InstanceId: {}:{}. slot: {}", item.lower_bits, item.upper_bits, im->GetSlotName(data.slot));
-		});
+		OnlineProdData data = m_im->GetProdData(item);
+		int x = data.slot;
+		std::string xy = m_im->GetSlotName(x);
+		LOG("InstanceId: {}:{}. slot: {}", item.lower_bits, item.upper_bits, xy);
 	}
-
-	
 }
