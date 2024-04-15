@@ -9,6 +9,31 @@ InventoryModel::InventoryModel(std::shared_ptr<GameWrapper> gw) : m_gw(std::move
 	paintDatabase = items.GetPaintDB();
 	LOG("Items::Init-products");
 	InitProducts();
+	InitSlotNumbers();
+}
+
+void InventoryModel::InitSlotNumbers() {
+	slotNumbers.insert(std::pair<int, std::string>(0, "Body"));
+	slotNumbers.insert(std::pair<int, std::string>(1, "Decal"));
+	slotNumbers.insert(std::pair<int, std::string>(2, "Wheels"));
+	slotNumbers.insert(std::pair<int, std::string>(3, "Boost"));
+	slotNumbers.insert(std::pair<int, std::string>(4, "Antenna"));
+	slotNumbers.insert(std::pair<int, std::string>(5, "Topper"));
+	slotNumbers.insert(std::pair<int, std::string>(6, "Paint"));
+	slotNumbers.insert(std::pair<int, std::string>(7, "PaintFinish"));
+	slotNumbers.insert(std::pair<int, std::string>(12, "PaintAlt"));
+	slotNumbers.insert(std::pair<int, std::string>(14, "Trail"));
+	slotNumbers.insert(std::pair<int, std::string>(15, "GoalExplosion"));
+	slotNumbers.insert(std::pair<int, std::string>(16, "Banner"));
+	slotNumbers.insert(std::pair<int, std::string>(20, "AvatarBorder"));
+	slotNumbers.insert(std::pair<int, std::string>(21, "PlayerTitle"));
+}
+
+std::string InventoryModel::GetSlotName(int slotNo) {
+	if (slotNumbers.find(slotNo) == slotNumbers.end()) {
+		return "";
+	}
+	return slotNumbers[slotNo];
 }
 
 OnlineProdData InventoryModel::GetProdData(OnlineProductWrapper& onlineProd)

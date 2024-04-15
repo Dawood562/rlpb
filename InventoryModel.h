@@ -24,6 +24,8 @@ enum class ItemSlots {
 };
 
 
+
+
 class InventoryModel
 {
 public:
@@ -33,8 +35,8 @@ public:
 	OnlineProdData GetProdData(const ProductInstanceID& instanceId);
 	void InitProducts();
 	const std::set<int>& GetForcedSlotForBody(int bodyId);
-	std::shared_ptr<ImageWrapper> GetSlotIcon(int slotIndex);
 	const std::vector<OnlineProdData>& GetSlotProducts(int slotIndex);
+	std::string GetSlotName(int slotNo);
 
 private:
 	std::shared_ptr<GameWrapper> m_gw;
@@ -45,4 +47,6 @@ private:
 	SpecialEditionDatabaseWrapper specialEditionDb = { 0 };
 	PaintDatabaseWrapper paintDatabase = { 0 };
 
+	std::map<int, std::string> slotNumbers;
+	void InitSlotNumbers();
 };

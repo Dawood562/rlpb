@@ -18,11 +18,12 @@ class rlpb: public BakkesMod::Plugin::BakkesModPlugin,
 
 	//std::shared_ptr<bool> enabled;
 
-	//Boilerplate
 	void onLoad() override;
 	//void onUnload() override; // Uncomment and implement if you need a unload method
 	void ballOnTop();
 	void spitPreset(std::shared_ptr<InventoryModel> im);
+
+	int PostBeginPlayCounter = 0;
 
 public:
 	void RenderSettings() override; // Uncomment if you wanna render your own tab in the settings menu

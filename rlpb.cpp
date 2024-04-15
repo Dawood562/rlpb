@@ -16,7 +16,7 @@ void rlpb::onLoad() {
 	LOG("Plugin loaded!");
 
 	auto inventoryModel = std::make_shared<InventoryModel>(gameWrapper);
-	
+
 	cvarManager->registerNotifier("BetterBallOnTop", [this](std::vector<std::string> args) {
 		ballOnTop(); }, "", PERMISSION_ALL);
 
@@ -26,19 +26,25 @@ void rlpb::onLoad() {
 	cvarManager->registerCvar("rlpb_token", "", "Token for loadout data", false);
 	cvarManager->registerCvar("rlpb_enabled", "0", "Enable Plugin", true, true, 0, true, 1)
 		.addOnValueChanged([this](std::string oldValue, CVarWrapper cvar) {
-			coolEnabled = cvar.getBoolValue();
-		});
+		coolEnabled = cvar.getBoolValue();
+			});
 	cvarManager->registerCvar("rlpb_distance", "200.0", "Distance to place the ball above");
+
+	gameWrapper->HookEvent("Function TAGame.Team_TA.PostBeginPlay",
+		[&, this](std::string eventName) {
+			// Function is called twice per match start, once per team that is totally joined and ready
+			PostBeginPlayCounter++;
+			if (PostBeginPlayCounter >= 2) {
+				LOG("Function TAGame.Team_TA.PostBeginPlay happened! Twice.");
+				PostBeginPlayCounter = 0;
+			}
+		});
 
 	// !! Enable debug logging by setting DEBUG_LOG = true in logging.h !!
 	//DEBUGLOG("rlpb debug mode enabled");
 
 	// LOG and DEBUGLOG use fmt format strings https://fmt.dev/latest/index.html
 	//DEBUGLOG("1 = {}, 2 = {}, pi = {}, false != {}", "one", 2, 3.14, true);
-
-	//cvarManager->registerNotifier("my_aweseome_notifier", [&](std::vector<std::string> args) {
-	//	LOG("Hello notifier!");
-	//}, "", 0);
 
 	//auto cvar = cvarManager->registerCvar("template_cvar", "hello-cvar", "just a example of a cvar");
 	//auto cvar2 = cvarManager->registerCvar("template_cvar2", "0", "just a example of a cvar with more settings", true, true, -10, true, 10 );
@@ -66,7 +72,7 @@ void rlpb::onLoad() {
 	//});
 	// You could also use std::bind here
 	//gameWrapper->HookEvent("Function TAGame.Ball_TA.Explode", std::bind(&rlpb::YourPluginMethod, this);
-
+}
 
 void rlpb::ballOnTop() {
 	if (!gameWrapper->IsInFreeplay()) { return; }
@@ -98,28 +104,14 @@ void rlpb::ballOnTop() {
 void rlpb::spitPreset(std::shared_ptr<InventoryModel> im) {
 	CarWrapper car = gameWrapper->GetLocalCar();
 	if (!car) { LOG("CarWrapper nono");  return; }
-	LOG("GetLoadoutTeamIndex:");
-	LOG(std::to_string(car.GetLoadoutTeamIndex()));
-
-	LOG("GetPreviewTeamIndex:");
-	LOG(std::to_string(car.GetPreviewTeamIndex()));
-
-	LOG("GetbLoadoutSet:");
-	LOG(std::to_string(car.GetbLoadoutSet()));
 
 	LOG("GetLoadoutBody:");
 	LOG(std::to_string(car.GetLoadoutBody()));
 
-	LOG("GetOwnerName:");
-	LOG(car.GetOwnerName());
-
 	ItemsWrapper items = gameWrapper->GetItemsWrapper();
 	if (!items) { LOG("ItemsWrapper nono");  return; }
 
-	LoadoutWrapper loadout = items.GetCurrentLoadout(car.GetPreviewTeamIndex());
-
-	LOG("loadout.GetLoadout().Count()");
-	LOG(std::to_string(loadout.GetLoadout().Count()));
+	LoadoutWrapper loadout = items.GetCurrentLoadout(car.GetPreviewTeamIndex()); // 0 = Blue, 1 = Orange
 
 	LOG("loadout.GetLoadout().IsNull()");
 	LOG(std::to_string(loadout.GetLoadout().IsNull()));
@@ -141,6 +133,10 @@ void rlpb::spitPreset(std::shared_ptr<InventoryModel> im) {
 	for (auto item : load)
 	{
 		auto data = im->GetProdData(item);
-		LOG("InstanceId: {}:{}. slot: {}", item.lower_bits, item.upper_bits, data.slot);
+		gameWrapper->Execute([&, this](GameWrapper* gw) {
+			LOG("InstanceId: {}:{}. slot: {}", item.lower_bits, item.upper_bits, im->GetSlotName(data.slot));
+		});
 	}
+
+	
 }
