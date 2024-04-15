@@ -13,6 +13,15 @@ void rlpb::RenderSettings() {
         ImGui::SetTooltip("Activate Ball On Top");
     }
 
+    if (ImGui::Button("Something about le car")) {
+        gameWrapper->Execute([this](GameWrapper* gw) {
+            cvarManager->executeCommand("spitPreset");
+            });
+    }
+    if (ImGui::IsItemHovered()) {
+        ImGui::SetTooltip("pres");
+    }
+
     CVarWrapper enableCvar = cvarManager->getCvar("rlpb_enabled");
     if (!enableCvar) { return; }
     bool enabled = enableCvar.getBoolValue();

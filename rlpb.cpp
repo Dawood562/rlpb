@@ -16,6 +16,9 @@ void rlpb::onLoad() {
 	cvarManager->registerNotifier("BetterBallOnTop", [this](std::vector<std::string> args) {
 		ballOnTop(); }, "", PERMISSION_ALL);
 
+	cvarManager->registerNotifier("spitPreset", [this](std::vector<std::string> args) {
+		spitPreset(); }, "", PERMISSION_ALL);
+
 	cvarManager->registerCvar("rlpb_token", "", "Token for loadout data", false);
 	cvarManager->registerCvar("rlpb_enabled", "0", "Enable Plugin", true, true, 0, true, 1)
 		.addOnValueChanged([this](std::string oldValue, CVarWrapper cvar) {
@@ -93,5 +96,30 @@ void rlpb::ballOnTop() {
 }
 
 void rlpb::spitPreset() {
+	CarWrapper car = gameWrapper->GetLocalCar();
+	if (!car) { LOG("CarWrapper nono");  return; }
+	LOG("GetLoadoutTeamIndex:");
+	LOG(std::to_string(car.GetLoadoutTeamIndex()));
+
+	LOG("GetPreviewTeamIndex:");
+	LOG(std::to_string(car.GetPreviewTeamIndex()));
+
+	LOG("GetbLoadoutSet:");
+	LOG(std::to_string(car.GetbLoadoutSet()));
+
+	LOG("GetLoadoutBody:");
+	LOG(std::to_string(car.GetLoadoutBody()));
+
+	LOG("GetOwnerName:");
+	LOG(car.GetOwnerName());
+
+	ItemsWrapper items = gameWrapper->GetItemsWrapper();
+	if (!items) { LOG("ItemsWrapper nono");  return; }
+
+	LOG("items.GetCurrentLoadout(0).GetLoadout().Count()");
+	LOG(std::to_string(items.GetCurrentLoadout(0).GetLoadout().Count()));
+
+	LOG("items.GetCurrentLoadout(0).GetLoadout().IsNull()");
+	LOG(std::to_string(items.GetCurrentLoadout(0).GetLoadout().IsNull()));
 
 }
