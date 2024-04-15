@@ -2,10 +2,6 @@
 #include "InventoryModel.h"
 #include <ranges>
 
-
-
-
-
 InventoryModel::InventoryModel(std::shared_ptr<GameWrapper> gw) : m_gw(std::move(gw))
 {
 	auto items = m_gw->GetItemsWrapper();
@@ -106,7 +102,7 @@ OnlineProdData InventoryModel::GetProdData(const ProductInstanceID& instanceId)
 	}
 	else
 	{
-		DEBUGLOG("no product: {}:{}", static_cast<long>(instanceId.lower_bits), static_cast<long>(instanceId.upper_bits));
+		LOG("no product: {}:{}", static_cast<long>(instanceId.lower_bits), static_cast<long>(instanceId.upper_bits));
 	}
 	return item;
 }

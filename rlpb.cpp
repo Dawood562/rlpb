@@ -1,7 +1,8 @@
 #include "pch.h"
 #include "rlpb.h"
-#include "ItemStructs.h"
+
 #include "InventoryModel.h"
+#include "utils/parser.h"
 
 
 BAKKESMOD_PLUGIN(rlpb, "Twitch Preset Integration", plugin_version, PLUGINTYPE_FREEPLAY)
@@ -14,12 +15,13 @@ void rlpb::onLoad() {
 	_globalCvarManager = cvarManager;
 	LOG("Plugin loaded!");
 
+	auto inventoryModel = std::make_shared<InventoryModel>(gameWrapper);
 	
 	cvarManager->registerNotifier("BetterBallOnTop", [this](std::vector<std::string> args) {
 		ballOnTop(); }, "", PERMISSION_ALL);
 
-	cvarManager->registerNotifier("spitPreset", [this](std::vector<std::string> args) {
-		spitPreset(); }, "", PERMISSION_ALL);
+	cvarManager->registerNotifier("spitPreset", [&, this](std::vector<std::string> args) {
+		spitPreset(inventoryModel); }, "", PERMISSION_ALL);
 
 	cvarManager->registerCvar("rlpb_token", "", "Token for loadout data", false);
 	cvarManager->registerCvar("rlpb_enabled", "0", "Enable Plugin", true, true, 0, true, 1)
@@ -97,7 +99,7 @@ void rlpb::ballOnTop() {
 
 }
 
-void rlpb::spitPreset() {
+void rlpb::spitPreset(std::shared_ptr<InventoryModel> im) {
 	CarWrapper car = gameWrapper->GetLocalCar();
 	if (!car) { LOG("CarWrapper nono");  return; }
 	LOG("GetLoadoutTeamIndex:");
@@ -140,15 +142,9 @@ void rlpb::spitPreset() {
 
 	auto load = loadout.GetOnlineLoadoutV2();
 
-	LOG("InstanceId: {}: {}-{}.", "Body", load[0].lower_bits, load[0].upper_bits);
-	LOG("InstanceId: {}: {}-{}.", "Decal", load[1].lower_bits, load[1].upper_bits);
-	LOG("InstanceId: {}: {}-{}.", "Wheels", load[2].lower_bits, load[2].upper_bits);
-	LOG("InstanceId: {}: {}-{}.", "Boost", load[3].lower_bits, load[3].upper_bits);
-	LOG("InstanceId: {}: {}-{}.", "Antenna", load[4].lower_bits, load[4].upper_bits);
-	LOG("InstanceId: {}: {}-{}.", "Topper", load[5].lower_bits, load[5].upper_bits);
-	LOG("InstanceId: {}: {}-{}.", "Paint", load[6].lower_bits, load[6].upper_bits);
-	LOG("InstanceId: {}: {}-{}.", "PaintAlt", load[12].lower_bits, load[12].upper_bits);
-	LOG("InstanceId: {}: {}-{}.", "EngineSound", load[13].lower_bits, load[13].upper_bits);
-	LOG("InstanceId: {}: {}-{}.", "Trail", load[14].lower_bits, load[14].upper_bits);
-	LOG("InstanceId: {}: {}-{}.", "GoalExplosion", load[15].lower_bits, load[15].upper_bits);
+	for (auto item : load)
+	{
+		auto data = im->GetProdData(item);
+		LOG("InstanceId: {}:{}. slot: {}", item.lower_bits, item.upper_bits, data.slot);
+	}
 }

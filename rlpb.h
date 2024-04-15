@@ -6,6 +6,8 @@
 #include "bakkesmod/plugin/PluginSettingsWindow.h"
 
 #include "version.h"
+#include "InventoryModel.h"
+
 constexpr auto plugin_version = stringify(VERSION_MAJOR) "." stringify(VERSION_MINOR) "." stringify(VERSION_PATCH) "." stringify(VERSION_BUILD);
 
 
@@ -20,7 +22,7 @@ class rlpb: public BakkesMod::Plugin::BakkesModPlugin,
 	void onLoad() override;
 	void onUnload() override; // Uncomment and implement if you need a unload method
 	void ballOnTop();
-	void spitPreset();
+	void spitPreset(std::shared_ptr<InventoryModel> im);
 
 public:
 	void RenderSettings() override; // Uncomment if you wanna render your own tab in the settings menu
