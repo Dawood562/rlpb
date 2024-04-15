@@ -84,6 +84,12 @@
     <ClCompile Include="rlpbSettings.cpp">
       <Filter>Plugin\src</Filter>
     </ClCompile>
+    <ClCompile Include="ItemStructs.cpp">
+      <Filter>Plugin\src</Filter>
+    </ClCompile>
+    <ClCompile Include="InventoryModel.cpp">
+      <Filter>Plugin\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imgui_rangeslider.h">
@@ -142,6 +148,12 @@
     </ClInclude>
     <ClInclude Include="GuiBase.h">
       <Filter>Plugin\header</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemStructs.h">
+      <Filter>Plugin\src</Filter>
+    </ClInclude>
+    <ClInclude Include="InventoryModel.h">
+      <Filter>Plugin\src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
