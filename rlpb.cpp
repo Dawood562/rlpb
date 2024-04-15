@@ -30,6 +30,8 @@ void rlpb::onLoad() {
 			});
 	cvarManager->registerCvar("rlpb_distance", "200.0", "Distance to place the ball above");
 
+
+	// On spawn-in
 	gameWrapper->HookEvent("Function TAGame.Team_TA.PostBeginPlay",
 		[&, this](std::string eventName) {
 			// Function is called twice per match start, once per team that is totally joined and ready
@@ -37,8 +39,22 @@ void rlpb::onLoad() {
 			if (PostBeginPlayCounter >= 2) {
 				LOG("Function TAGame.Team_TA.PostBeginPlay happened! Twice.");
 				PostBeginPlayCounter = 0;
+				gameWrapper->Toast("It happened twice!", "Super cool", "arrow", 5.0, ToastType_Error);
 			}
 		});
+
+	// On loadout change
+	gameWrapper->HookEvent("Function TAGame.ProfileLoadoutSave_TA.EventEquippedLoadoutChanged",
+		[&, this](std::string eventName) {
+			gameWrapper->Toast("You changed your loadout", "noob", "arrow", 5.0, ToastType_Error);
+		});
+
+	// Toast png loader
+	gameWrapper->LoadToastTexture("arrow", gameWrapper->GetDataFolder() / "arrow-down.png");
+
+	cvarManager->registerNotifier("rlpb_toast", [this](std::vector<std::string> args) {
+		gameWrapper->Toast("Toast is delicious", "Check the plugins tab for more details", "arrow", 5.0, ToastType_Error);
+		}, "", PERMISSION_ALL);
 
 	// !! Enable debug logging by setting DEBUG_LOG = true in logging.h !!
 	//DEBUGLOG("rlpb debug mode enabled");
