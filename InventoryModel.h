@@ -28,7 +28,6 @@ class InventoryModel
 {
 public:
 	explicit InventoryModel(std::shared_ptr<GameWrapper> gw);
-	void InitSlotIcons();
 
 	OnlineProdData GetProdData(OnlineProductWrapper& onlineProd);
 	OnlineProdData GetProdData(const ProductInstanceID& instanceId);

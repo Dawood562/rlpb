@@ -7,26 +7,8 @@ InventoryModel::InventoryModel(std::shared_ptr<GameWrapper> gw) : m_gw(std::move
 	auto items = m_gw->GetItemsWrapper();
 	specialEditionDb = items.GetSpecialEditionDB();
 	paintDatabase = items.GetPaintDB();
-	LOG("Items::Init-slot-icons");
-	InitSlotIcons();
 	LOG("Items::Init-products");
 	InitProducts();
-}
-
-void InventoryModel::InitSlotIcons()
-{
-	auto iconFolder = m_gw->GetDataFolder() / "OrganizeMyGarageOS";
-	m_slotIcons[static_cast<int>(ItemSlots::Body)] = std::make_shared<ImageWrapper>(iconFolder / "Body.png", false, true);
-	m_slotIcons[static_cast<int>(ItemSlots::Decal)] = std::make_shared<ImageWrapper>(iconFolder / "Skin.png", false, true);
-	m_slotIcons[static_cast<int>(ItemSlots::Wheels)] = std::make_shared<ImageWrapper>(iconFolder / "Wheels.png", false, true);
-	m_slotIcons[static_cast<int>(ItemSlots::Boost)] = std::make_shared<ImageWrapper>(iconFolder / "Boost.png", false, true);
-	m_slotIcons[static_cast<int>(ItemSlots::Antenna)] = std::make_shared<ImageWrapper>(iconFolder / "Antenna.png", false, true);
-	m_slotIcons[static_cast<int>(ItemSlots::Topper)] = std::make_shared<ImageWrapper>(iconFolder / "Hat.png", false, true);
-	m_slotIcons[static_cast<int>(ItemSlots::Paint)] = std::make_shared<ImageWrapper>(iconFolder / "Paint.png", false, true);
-	m_slotIcons[static_cast<int>(ItemSlots::PaintAlt)] = m_slotIcons[static_cast<int>(ItemSlots::Paint)];
-	m_slotIcons[static_cast<int>(ItemSlots::EngineSound)] = std::make_shared<ImageWrapper>(iconFolder / "EngineAudio.png", false, true);
-	m_slotIcons[static_cast<int>(ItemSlots::Trail)] = std::make_shared<ImageWrapper>(iconFolder / "Trail.png", false, true);
-	m_slotIcons[static_cast<int>(ItemSlots::GoalExplosion)] = std::make_shared<ImageWrapper>(iconFolder / "GoalFX.png", false, true);
 }
 
 OnlineProdData InventoryModel::GetProdData(OnlineProductWrapper& onlineProd)
@@ -173,16 +155,6 @@ const std::set<int>& InventoryModel::GetForcedSlotForBody(int bodyId)
 	}
 	static std::set<int> emptySet{};
 	return emptySet;
-}
-
-std::shared_ptr<ImageWrapper> InventoryModel::GetSlotIcon(int slotIndex)
-{
-	if (const auto it = m_slotIcons.find(slotIndex); it != m_slotIcons.end())
-	{
-		return it->second;
-	}
-	return nullptr;
-
 }
 
 const std::vector<OnlineProdData>& InventoryModel::GetSlotProducts(int slot)
