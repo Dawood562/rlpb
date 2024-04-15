@@ -10,10 +10,17 @@ enum class ItemSlots {
 	Antenna = 4,
 	Topper = 5,
 	Paint = 6,
+	PaintFinish = 7,
+	Containers = 11,
 	PaintAlt = 12,
 	EngineSound = 13,
 	Trail = 14,
-	GoalExplosion = 15
+	GoalExplosion = 15,
+	Banner = 16,
+	PlayerAnthem = 18,
+	AvatarBorder = 20,
+	PlayerTitle = 21,
+	BlueprintSeries = 24
 };
 
 
