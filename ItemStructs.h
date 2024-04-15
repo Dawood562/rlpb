@@ -9,8 +9,6 @@ struct OnlineProdData {
 	bool canEquip = false;
 	bool favorite{ false };
 
-	[[nodiscard]] bool IsBodyCompatible(int body) const;
-
 	void SetOfflineProductData(ProductWrapper& productWrapper);
 
 	std::string ToString() const;
