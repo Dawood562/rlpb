@@ -20,7 +20,7 @@ class rlpb: public BakkesMod::Plugin::BakkesModPlugin,
 
 	//Boilerplate
 	void onLoad() override;
-	void onUnload() override; // Uncomment and implement if you need a unload method
+	//void onUnload() override; // Uncomment and implement if you need a unload method
 	void ballOnTop();
 	void spitPreset(std::shared_ptr<InventoryModel> im);
 

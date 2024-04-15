@@ -66,11 +66,7 @@ void rlpb::onLoad() {
 	//});
 	// You could also use std::bind here
 	//gameWrapper->HookEvent("Function TAGame.Ball_TA.Explode", std::bind(&rlpb::YourPluginMethod, this);
-}
 
-void rlpb::onUnload() {
-	LOG("I was too cool for this world B'(");
-}
 
 void rlpb::ballOnTop() {
 	if (!gameWrapper->IsInFreeplay()) { return; }

@@ -13,7 +13,7 @@ void OnlineProdData::SetOfflineProductData(ProductWrapper& productWrapper)
 	//canEquip = product_wrapper.CanEquip();
 	name = productWrapper.GetLongLabel().ToString();
 	slot = productWrapper.GetSlot().GetSlotIndex();
-	LOG("slot: {}", slot);
+	//LOG("slot: {}, name: {}, prodID: {}", slot, name, prodId);
 }
 
 void OnlineProdData::something() {

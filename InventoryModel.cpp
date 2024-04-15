@@ -122,11 +122,11 @@ void InventoryModel::InitProducts()
 	{
 		auto data = GetProdData(onlineProd);
 		m_products[data.slot].push_back(data);
-		DEBUGLOG("Online Item: {}", data.ToString());
+		//DEBUGLOG("Online Item: {}", data.ToString());
 	}
 	auto productWrappers = items.GetCachedUnlockedProducts();
 	auto c2 = productWrappers.Count();
-	LOG("CachedUnlockedProducts: {}", c2);
+	//LOG("CachedUnlockedProducts: {}", c2);
 	for (auto unlockedProduct : productWrappers)
 	{
 		if (unlockedProduct.IsNull()) continue;
@@ -135,7 +135,7 @@ void InventoryModel::InitProducts()
 		if (data.prodId != 0)
 		{
 			m_products[data.slot].push_back(data);
-			DEBUGLOG("Cached Item: {}", data.ToString());
+			//DEBUGLOG("Cached Item: {}", data.ToString());
 		}
 	}
 
