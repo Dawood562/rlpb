@@ -116,10 +116,37 @@ void rlpb::spitPreset() {
 	ItemsWrapper items = gameWrapper->GetItemsWrapper();
 	if (!items) { LOG("ItemsWrapper nono");  return; }
 
-	LOG("items.GetCurrentLoadout(0).GetLoadout().Count()");
-	LOG(std::to_string(items.GetCurrentLoadout(0).GetLoadout().Count()));
+	LoadoutWrapper loadout = items.GetCurrentLoadout(car.GetPreviewTeamIndex());
 
-	LOG("items.GetCurrentLoadout(0).GetLoadout().IsNull()");
-	LOG(std::to_string(items.GetCurrentLoadout(0).GetLoadout().IsNull()));
+	LOG("loadout.GetLoadout().Count()");
+	LOG(std::to_string(loadout.GetLoadout().Count()));
 
+	LOG("loadout.GetLoadout().IsNull()");
+	LOG(std::to_string(loadout.GetLoadout().IsNull()));
+
+	LOG("loadout.GetPrimaryPaintColorId()");
+	LOG(std::to_string(loadout.GetPrimaryPaintColorId()));
+
+	LOG("loadout.GetAccentPaintColorId()");
+	LOG(std::to_string(loadout.GetAccentPaintColorId()));
+
+	LOG("loadout.GetPrimaryFinishId()");
+	LOG(std::to_string(loadout.GetPrimaryFinishId()));
+
+	LOG("loadout.GetAccentFinishId()");
+	LOG(std::to_string(loadout.GetAccentFinishId()));
+
+	auto load = loadout.GetOnlineLoadoutV2();
+
+	LOG("InstanceId: {}: {}-{}.", "Body", load[0].lower_bits, load[0].upper_bits);
+	LOG("InstanceId: {}: {}-{}.", "Decal", load[1].lower_bits, load[1].upper_bits);
+	LOG("InstanceId: {}: {}-{}.", "Wheels", load[2].lower_bits, load[2].upper_bits);
+	LOG("InstanceId: {}: {}-{}.", "Boost", load[3].lower_bits, load[3].upper_bits);
+	LOG("InstanceId: {}: {}-{}.", "Antenna", load[4].lower_bits, load[4].upper_bits);
+	LOG("InstanceId: {}: {}-{}.", "Topper", load[5].lower_bits, load[5].upper_bits);
+	LOG("InstanceId: {}: {}-{}.", "Paint", load[6].lower_bits, load[6].upper_bits);
+	LOG("InstanceId: {}: {}-{}.", "PaintAlt", load[12].lower_bits, load[12].upper_bits);
+	LOG("InstanceId: {}: {}-{}.", "EngineSound", load[13].lower_bits, load[13].upper_bits);
+	LOG("InstanceId: {}: {}-{}.", "Trail", load[14].lower_bits, load[14].upper_bits);
+	LOG("InstanceId: {}: {}-{}.", "GoalExplosion", load[15].lower_bits, load[15].upper_bits);
 }
