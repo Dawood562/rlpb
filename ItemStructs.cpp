@@ -16,6 +16,10 @@ void OnlineProdData::SetOfflineProductData(ProductWrapper& productWrapper)
 	LOG("slot: {}", slot);
 }
 
+void OnlineProdData::something() {
+	
+}
+
 std::string OnlineProdData::ToString() const
 {
 	return std::format("Name: {}, Id: {}, Fav: {}, Slot: {}, Lo: {}, Hi: {}",

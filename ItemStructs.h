@@ -12,6 +12,7 @@ struct OnlineProdData {
 	void SetOfflineProductData(ProductWrapper& productWrapper);
 
 	std::string ToString() const;
+	void something();
 };
 
 struct PaintData
