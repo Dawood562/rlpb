@@ -131,7 +131,7 @@ void rlpb::spitPreset(std::shared_ptr<InventoryModel> im) {
 	LOG(std::to_string(car.GetLoadoutBody()));
 
 	ItemsWrapper items = gameWrapper->GetItemsWrapper();
-	if (!items) { LOG("ItemsWrapper nono");  return; }
+	if (!items) { return; }
 
 	LoadoutWrapper loadout = items.GetCurrentLoadout(car.GetPreviewTeamIndex()); // 0 = Blue, 1 = Orange
 	if (!loadout) { LOG("LoadoutWrapper nah"); return; }
@@ -145,14 +145,9 @@ void rlpb::spitPreset(std::shared_ptr<InventoryModel> im) {
 	LOG("loadout.GetAccentPaintColorId()");
 	LOG(std::to_string(loadout.GetAccentPaintColorId()));
 
-	std::shared_ptr m_im = std::move(im);
-	auto load = loadout.GetOnlineLoadoutV2();
-
-	for (auto item : load)
+	for (auto item : loadout.GetOnlineLoadoutV2();)
 	{
-		OnlineProdData data = m_im->GetProdData(item);
-		int x = data.slot;
-		std::string xy = m_im->GetSlotName(x);
-		LOG("InstanceId: {}:{}. slot: {}", item.lower_bits, item.upper_bits, xy);
+		OnlineProdData data = im->GetProdData(item);
+		LOG("InstanceId: {}:{}. slot: {}", item.lower_bits, item.upper_bits, im->GetSlotName(data.slot));
 	}
 }
