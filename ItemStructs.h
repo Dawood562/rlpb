@@ -1,4 +1,4 @@
-﻿﻿#pragma once
+﻿#pragma once
 
 struct OnlineProdData {
 	int prodId = 0;
@@ -18,14 +18,14 @@ struct PaintData
 {
 	int primaryId = 0;
 	int accentId = 0;
-	LinearColor primaryColor = {};
-	LinearColor accentColor = {};
+	LinearColor primaryColour = {};
+	LinearColor accentColour = {};
 };
 
 struct PresetData {
 	std::string name;
-	PaintData color1;
-	PaintData color2;
-	std::vector<OnlineProdData> loadout = {};
-	std::vector<OnlineProdData> loadout2 = {};
+	PaintData blueCol;
+	PaintData orangeCol;
+	std::vector<OnlineProdData> blueLoadout = {};
+	std::vector<OnlineProdData> orangeLoadout = {};
 };
